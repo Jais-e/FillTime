@@ -1,0 +1,39 @@
+[
+{
+"title":"BEN IS BACK",
+"time":"20.00",
+"genre":"Drama",
+"theater":"",
+"duration":"103",
+"end-date": "",
+"img":"https://www.kino.dk/sites/default/files/styles/k_poster_big/public/movie-posters/ben_is_back_plakat.jpg?itok=CwaEDQAf"
+},
+{
+"title":"COLD CASE HAMMARSKJÖLD",
+"time":"18.00",
+"genre":"Dokumentar",
+"theater":"",
+"duration":"",
+"end-date": "",
+"img":"https://www.kino.dk/sites/default/files/styles/k_poster_big/public/movie-posters/cold_case_hammarskjold_poster_for_web.jpg?itok=NbfhSKZM"
+
+},
+{
+"title":"KAPERNAUM",
+"time":"16.00",
+"genre":"Drama",
+"theater":"",
+"duration":"120",
+"end-date": "",
+"img":"https://www.kino.dk/sites/default/files/styles/k_poster_big/public/movie-posters/kapernaum-plakat.jpg?itok=EPRlWo5L"
+},
+{
+"title":"LEGO FILMEN 2",
+"time":"17.30",
+"genre":"Familiefilm",
+"theater":"",
+"duration":"",
+"end-date": "",
+"img":"https://www.kino.dk/sites/default/files/styles/k_poster_big/public/movie-posters/lego2plakat.jpg?itok=WWnK9UWE"
+}
+]

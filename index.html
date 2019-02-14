@@ -3,38 +3,61 @@
 
 <head>
   <meta charset="utf-8">
-  <title></title>
+  <title>FillTime | Make something of your waiting time</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js" charset="utf-8"></script>
+  <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="shortcut icon" type="" />
+  <link rel="shortcut icon" type="image/png" href="img/logo.png" />
+  <link rel="icon" type="image/png" href="favicon.ico">
 </head>
+
 <body>
-  <!-- the element which will hold the posts list -->
- <div id="posts-list"></div>
-<div id="posts-grid"></div>
- <!-- load the polyfill -->
- <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js" charset="utf-8"></script>
 
- <script type="text/javascript">
-   const postsContainer = document.getElementById('posts-list')
-   // fetch all posts
-   // here I'm using port 8888 on localhost, but your URL might of course be different
-   fetch('http://webapp.jais-e.dk/wp-json/wp/v2/posts')
-     // get the response as JSON
-     .then(r => r.json())
-     // go through the posts and append each posts' title to the HTML element
-     .then(posts => {
-       posts.map(post => {
-         const postDiv = document.createElement('div')
-         postDiv.innerHTML = post.title.rendered
-         postDiv.innerHTML += post.content.rendered
-        
-         postsContainer.appendChild(postDiv)
-       })
-     })
+  <main class="wrapper">
+    <picture class="corner-up">
+      <img src="img/corner.png" alt="corner graphics">
+    </picture>
 
- </script>
+    <header>
+      <div class="logo"><img src="img/logo.png" alt"logo"></div>
+      <div class="burger"></div>
+    </header>
+
+    <!-- the element which will hold the json-data -->
+    <article class="content">
+      <section>
+        <select class="selector" id="city-choice"></select>
+        <select class="selector" id="start-time"></select>
+        <select class="selector" id="end-time"></select>
+        <select class="selector" id="category-choice"></select>
+      </section>
+
+    </article>
+    <section class="tagline">
+      <h2>Make something of your wating time</h2>
+    </section>
+
+
+  </main>
+  <footer>
+    <section class="buttons">
+      <button id="get_started">Get started<span class="bright"> >></span></button>
+      <button id="next">Next<span class="bright"> >></button>
+      <button id="submit">Next<span class="bright"> >></button>
+    </section>
+    <picture class="corner-down">
+      <img src="img/corner.png" alt="corner graphics">
+    </picture>
+    <script type="text/javascript" src="js/script.js"></script>
+  </footer>
+
+
+
+
+
 </body>
+
 </html>
