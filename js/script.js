@@ -28,7 +28,6 @@ document.querySelector('#get-started').onclick = function() {
 `
     console.log(city);
   }
-
   // Add "cities" to DOM
   document.querySelector(".selector").innerHTML += dropDown;
 
@@ -47,13 +46,13 @@ document.querySelector("#city-choice").onchange = function() {
 // Populate dropdown menu with "categories" when clicking "next" button
 document.querySelector('#next') = function() {
   for (let cat of categories) {
-    dropDown += `
+    dropDown2 += `
   <option class="select-item" value=${cat}> ${cat} </option>
 `
     console.log(categories);
   }
   // Add "categories" to DOM
-  document.querySelector(".selector").innerHTML += dropDown;
+  document.querySelector(".selector").innerHTML += dropDown2;
 }
 
 /*
@@ -63,22 +62,16 @@ function activityAvailable(activities, startTime, endTime, maxDuration){
   if ()
 };
 */
+
+
 // Convert minutes into hours and minutes
-
 function timeConvert(n) {
-
   let num = n;
-
   let hours = (num / 60);
-
   let rhours = Math.floor(hours);
-
   let minutes = (hours - rhours) * 60;
-
   let rminutes = Math.round(minutes);
-
   return rhours + " h and " + rminutes + " m";
-
 };
 
 
