@@ -5,13 +5,19 @@
   <meta charset="utf-8">
   <title>FillTime | Make something of your waiting time</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+<!-- Next two lines enables the browser possibility "add to homescreen" on your mobile device
+- Adds an icon that will launch the app in fullscreen mode-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="description" content="Tired of frequently wasting time while waiting for you next meeting, task, transport or whatever? Let FillTime find an activity in your area that fits your timeframe!">
+  <meta name="author" content="Jais Kurecko Eriksen">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js" charset="utf-8"></script>
   <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="shortcut icon" type="image/png" href="img/logo.png" />
-  <link rel="icon" type="image/png" href="favicon.ico">
+  <link rel="shortcut icon" href="favicon.ico">
+<link rel="icon" type="image/png" href="logo-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" sizes="180x180" href="logo-180x180.png">
 </head>
 
 <body>
@@ -22,12 +28,14 @@
     </picture>
 
     <header>
+      <div class="burger"><img src="img/burgermenu.png" alt="mobile nav icon"></div>
       <div class="logo"><img src="img/logo.png" alt"logo"></div>
-      <div class="burger"></div>
+
     </header>
 
     <!-- the element which will hold the json-data -->
     <article class="content">
+      <section class="animation"><img src="img/logoanimation3.gif" alt="animated logo"></section>
       <section>
         <select class="selector" id="city-choice"></select>
         <select class="selector" id="start-time"></select>
@@ -41,7 +49,7 @@
     </section>
 
 
-  </main>
+
   <footer>
     <section class="buttons">
       <button id="get-started">Get started<span class="bright"> >></span></button>
@@ -53,7 +61,7 @@
     </picture>
     <script type="text/javascript" src="js/script.js"></script>
   </footer>
-
+</main>
 
 
 

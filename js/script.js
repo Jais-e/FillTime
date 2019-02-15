@@ -17,11 +17,13 @@ let activeEnd; // Activity location closes
 let startTimeframe; // User timeframe start
 let endTimeframe; // User timeframe ends
 
-
 // Populate dropdown menu with "cities" when clicking "next" button
 document.querySelector('#get-started').onclick = function() {
   document.querySelector("#city-choice").style.display = "block";
-
+  document.querySelector(".animation").style.display = "none";
+  document.querySelector(".logo").classList.add("visible");
+  document.querySelector(".burger").classList.add("visible");
+  document.querySelector('#get-started').disabled = true;
   for (let city of cities) {
     dropDown += `
   <option class="select-item" value=${city}> ${city} </option>
@@ -29,22 +31,39 @@ document.querySelector('#get-started').onclick = function() {
     console.log(city);
   }
   // Add "cities" to DOM
-  document.querySelector(".selector").innerHTML += dropDown;
+  document.querySelector("#city-choice").innerHTML += dropDown;
 
 };
 
-// When city selected... Only Aarhus is available
+// When city selected... (Only Aarhus is available)
 document.querySelector("#city-choice").onchange = function() {
   if (this[this.selectedIndex].value === "Aarhus") {
-    document.querySelector(".content").innerHTML = "You have chosen Aarhus";
+    document.querySelector("#category-choice").style.display = "block";
+    // Populate dropdown menu with "categories"
+    for (let cat of categories) {
+      dropDown2 += `
+    <option class="select-item" value=${cat}> ${cat} </option>
+  `
+      console.log(cat);
+    }
+    // Add "categories" to DOM
+    document.querySelector("#category-choice").innerHTML += dropDown2;
+
+    document.querySelector("#city-choice").style.display = "none";
+    document.querySelector("#get-started").style.display = "none";
+
+    document.querySelector("#next").style.display = "block";
+    document.querySelector(".content").innerHTML += "You have chosen Aarhus";
+
+
   } else {
     document.querySelector(".content").innerHTML = "This city is currently not available";
   }
 };
 
 
-// Populate dropdown menu with "categories" when clicking "next" button
-document.querySelector('#next') = function() {
+
+/*document.querySelector('#next').onclick = function() {
   for (let cat of categories) {
     dropDown2 += `
   <option class="select-item" value=${cat}> ${cat} </option>
@@ -56,7 +75,7 @@ document.querySelector('#next') = function() {
 }
 
 /*
-// Filter activities available within timframe
+// Filter activities available within timeframe
 function activityAvailable(activities, startTime, endTime, maxDuration){
   let maxDuration = endTime - startTime;
   if ()
@@ -65,6 +84,7 @@ function activityAvailable(activities, startTime, endTime, maxDuration){
 
 
 // Convert minutes into hours and minutes
+// Code found here: https://www.w3resource.com/javascript-exercises/javascript-date-exercise-13.php
 function timeConvert(n) {
   let num = n;
   let hours = (num / 60);
