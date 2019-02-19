@@ -4,8 +4,11 @@
 // Global variables
 const cities = ["Aarhus", "Copenhagen", "Odense", "Aalborg"];
 const categories = ["All", "Movies", "Museums", "Parks", "Music", "Active"];
+const time = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
 let dropDown = '<option value="">-- Choose city --</option>';
-let dropDown2 = '<option value="">-- Choose category --</option>';
+let dropDown2 = '<option value="">-- Choose activity --</option>';
+let dropDown3 = '<option value="">-- Start at --</option>';
+let dropDown4 = '<option value="">-- End at --</option>';
 let activityTime; // Duration OR recommended time to spend - per category
 let allActivitiesTime; // Duration OR recommended time to spend - all categories
 let exhibitStart; // Museum opens
@@ -16,14 +19,32 @@ let activeStart; // Activity location opens
 let activeEnd; // Activity location closes
 let startTimeframe; // User timeframe start
 let endTimeframe; // User timeframe ends
+let availableTime;
+let chosenCategory;
 
-// Populate dropdown menu with "cities" when clicking "next" button
+// What to be displayed when clicking "Get started" button
 document.querySelector('#get-started').onclick = function() {
+  document.querySelector('#get-started').style.opacity = "0.5";
   document.querySelector("#city-choice").style.display = "block";
+  document.querySelector("#marker").style.display = "block";
   document.querySelector(".animation").style.display = "none";
   document.querySelector(".logo").classList.add("visible");
   document.querySelector(".burger").classList.add("visible");
+  document.querySelector("#headline-top").innerHTML = "City:";
+  document.querySelector("#headline-position1").innerHTML = "Or...";
+  document.querySelector("#headline-position2").innerHTML = "Use location";
   document.querySelector('#get-started').disabled = true;
+
+  // Show message that location is not working yet - if icon is clicked
+  document.querySelector("#marker").onclick = function() {
+    document.querySelector(".error-modal").style.display = "block";
+    document.querySelector("#error-msg").innerHTML = "<h4>Sorry - This functionality is not yet available<br>Please choose from dropdown menu</h4><br><button id='ok-btn'>Ok!</button>";
+    document.querySelector("#ok-btn").onclick = function() {
+      document.querySelector(".error-modal").style.display = "none";
+    };
+  };
+
+  // Populate dropdown menu with "cities" when clicking "Get started" button
   for (let city of cities) {
     dropDown += `
   <option class="select-item" value=${city}> ${city} </option>
@@ -35,54 +56,128 @@ document.querySelector('#get-started').onclick = function() {
 
 };
 
-// When city selected... (Only Aarhus is available)
+// When city selected... only Aarhus works
 document.querySelector("#city-choice").onchange = function() {
   if (this[this.selectedIndex].value === "Aarhus") {
-    document.querySelector("#category-choice").style.display = "block";
+    // Display elements "block"
+    let elementsOn = document.querySelectorAll("#start-time, #end-time, #category-choice, #next, .city-img");
+    let iOn;
+    for (iOn = 0; iOn < elementsOn.length; iOn++) {
+      elementsOn[iOn].style.display = "block";
+    };
+
+    // Display elements "none"
+    let elementsOff = document.querySelectorAll("#city-choice, #get-started, #marker, #headline-position1, #headline-position2");
+    let iOff;
+    for (iOff = 0; iOff < elementsOff.length; iOff++) {
+      elementsOff[iOff].style.display = "none";
+    };
+    // Set headlines and city image
+    document.querySelector("#headline-top").innerHTML = "Timeframe:";
+    document.querySelector("#headline-category").innerHTML = "Activity:";
+    document.querySelector(".city-img").innerHTML += "<img src='img/aarhus.png'>";
     // Populate dropdown menu with "categories"
     for (let cat of categories) {
       dropDown2 += `
     <option class="select-item" value=${cat}> ${cat} </option>
   `
-      console.log(cat);
+      console.log("categories " + cat);
     }
     // Add "categories" to DOM
     document.querySelector("#category-choice").innerHTML += dropDown2;
-
-    document.querySelector("#city-choice").style.display = "none";
-    document.querySelector("#get-started").style.display = "none";
-
-    document.querySelector("#next").style.display = "block";
-    document.querySelector(".content").innerHTML += "You have chosen Aarhus";
-
-
+    // Populate dropdown3 menu with "time"
+    for (let hour of time) {
+      dropDown3 += `
+    <option class="select-item" value=${hour}> ${hour + ".00"} </option>
+    `
+      console.log("start times " + hour);
+    }
+    // Populate dropdown4 menu with "time"
+    for (let hour of time) {
+      dropDown4 += `
+  <option class="select-item" value=${hour}> ${hour + ".00"} </option>
+  `
+      console.log("end times " + hour);
+    }
+    // Add "time" to DOM
+    document.querySelector("#start-time").innerHTML += dropDown3;
+    document.querySelector("#end-time").innerHTML += dropDown4;
+    // If not Aarhus is chosen - Only Aarhus is available
   } else {
-    document.querySelector(".content").innerHTML = "This city is currently not available";
+    document.querySelector(".error-modal").style.display = "block";
+    document.querySelector("#error-msg").innerHTML = "<h4>Currently only Aarhus is available</h4><br><button id='ok-btn'>Ok!</button>";
+    document.querySelector("#ok-btn").onclick = function() {
+      document.querySelector(".error-modal").style.display = "none";
+      document.querySelector("#city-choice").selectedIndex = dropDown[1];
+    };
   }
+
+  // Start time selection
+  document.querySelector("#start-time").onchange = function() {
+    startTimeframe = this[this.selectedIndex].value;
+    console.log(startTimeframe);
+  };
+
+  // End time selection
+  document.querySelector("#end-time").onchange = function() {
+    endTimeframe = this[this.selectedIndex].value;
+
+    // Validating input - Start can't be later than end
+    if (endTimeframe <= startTimeframe) {
+      document.querySelector(".error-modal").style.display = "block";
+      document.querySelector("#error-msg").innerHTML = "<h3>Please make sure that end time is later than start time ;-)</h3><br><button id='ok-btn'>Ok!</button>";
+      document.querySelector("#ok-btn").onclick = function() {
+        document.querySelector("#end-time").selectedIndex = dropDown4[0];
+        document.querySelector(".error-modal").style.display = "none";
+      };
+    }
+    // Calculate available time
+    else {
+      availableTime = endTimeframe - startTimeframe;
+    }
+    console.log("Time available " + availableTime + " hour(s)");
+  };
+
+  // Category selection
+  document.querySelector("#category-choice").onchange = function() {
+    chosenCategory = this[this.selectedIndex].value;
+    console.log(chosenCategory);
+  };
 };
 
-
-
-/*document.querySelector('#next').onclick = function() {
-  for (let cat of categories) {
-    dropDown2 += `
-  <option class="select-item" value=${cat}> ${cat} </option>
-`
-    console.log(categories);
-  }
-  // Add "categories" to DOM
-  document.querySelector(".selector").innerHTML += dropDown2;
-}
 
 /*
 // Filter activities available within timeframe
 function activityAvailable(activities, startTime, endTime, maxDuration){
-  let maxDuration = endTime - startTime;
+
   if ()
 };
 */
 
+document.querySelector("#next").onclick = function() {
+  if (startTimeframe >= 10 && endTimeframe >= 11 && chosenCategory != "-- Choose activity --") {
+    let elements = document.querySelectorAll("#headline-position1, #headline-position2, #headline-category, #category-choice, #start-time, #end-time, .city-img, #next ");
+    let i;
+    for (i = 0; i < elements.length; i++) {
+      elements[i].style.display = "none";
+    };
 
+    document.querySelector(".results").style.display = "block";
+    document.querySelector("#back").style.display = "block";
+    document.querySelector("#headline-top").innerHTML = "Your options:";
+    appendMovies();
+  } else {
+    document.querySelector(".error-modal").style.display = "block";
+    document.querySelector("#error-msg").innerHTML = "<h3>Make sure that you have chosen a category</h3><br><button id='ok-btn'>Ok!</button>";
+    document.querySelector("#ok-btn").onclick = function() {
+      document.querySelector("#end-time").selectedIndex = dropDown4[0];
+      document.querySelector(".error-modal").style.display = "none";
+    }
+  }
+};
+document.querySelector("#back").onclick = function() {
+  location.reload();
+}
 // Convert minutes into hours and minutes
 // Code found here: https://www.w3resource.com/javascript-exercises/javascript-date-exercise-13.php
 function timeConvert(n) {
@@ -120,7 +215,7 @@ function appendMovies(movies) {
           <section class="result-img">
             <img class="movie-img" src="${movie.acf.featured}" alt="movie poster">
           </section>
-          <section class="result-info">
+          <section class="movie-info">
             <h4>${movie.title.rendered}</h4>
             <p>Genre: ${movie.acf.genre}</p>
             <p>Description: ${movie.content.rendered}</p>
@@ -130,11 +225,11 @@ function appendMovies(movies) {
         `;
   };
 
-  document.querySelector(".content").innerHTML += movieTemplate;
+  document.querySelector(".results").innerHTML += movieTemplate;
 };
 
 // Get exhibition-category from Wordpress API
-function getMuseums() {
+function getExhibitions() {
   fetch('http://webapp.jais-e.dk/wp-json/wp/v2/posts?_embed&categories=6')
     .then(function(response) {
       return response.json();
@@ -167,5 +262,5 @@ function appendExhibitions(exhibitions) {
         `;
   };
 
-  document.querySelector(".content").innerHTML += exhibitionTemplate;
+  document.querySelector(".results").innerHTML += exhibitionTemplate;
 };

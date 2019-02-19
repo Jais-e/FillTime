@@ -1,5 +1,5 @@
 /* ANIMATIONS */
-@keyframes blinkForward {
+@keyframes blink {
   0% {
     filter: brightness(1);
     margin-left: 1.5%;
@@ -31,9 +31,7 @@
 body {
   max-width: 480px;
   height: 100vh;
-
   overflow-x: hidden;
-
 }
 .visible{
   animation-name: fadeIn;
@@ -42,13 +40,15 @@ body {
   animation-fill-mode: forwards;
 }
 .wrapper {
-
   height: 100%;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
+h1{
+  display: none;
+}
+
 
 /* HEADER SECTION */
 header {
@@ -56,7 +56,7 @@ header {
   width: 98%;
   margin: 0 auto;
   box-sizing: border-box;
-  border-bottom: 2px solid grey;
+  border-bottom: 1px solid #F15A24;
   display: flex;
   flex-direction: row-reverse;
 }
@@ -79,63 +79,128 @@ header {
   max-width: 100%;
 }
 .animation{
-  width: 80%;
+  width: 70%;
   margin: 0 auto;
-  padding: 0 0 0 0;
 }
 .animation img{
   max-width: 100%;
 }
+.headline{
+  text-align: center;
+  padding-bottom: 2%;
+}
+#headline-position1{
+  padding-top: 10%;
+}
 /* MAIN CONTENT STYLES */
+
+
 .content {
   width: 98%;
   margin: 0 auto;
-  flex-basis: 55%;
+  flex-basis: 60%;
   padding-top: 5%;
 }
 
 .selector {
   width: 70%;
-  margin: 0 15%;
+  margin: 0 auto;
   font-size: 1.5em;
   color: #4D4D4D;
   border-radius: 8px;
   text-align-last: center;
+  margin-bottom: 2%;
 }
-#city-choice, #category-choice, #start-time, #end-time{
+
+/* City choice "page" */
+#city-choice, #category-choice, #start-time, #end-time, .results{
   display: none;
 }
+#marker{
+  display: none;
+  width: 25%;
+  margin: 0 auto;
+
+}
+#marker img{
+  max-width: 100%;
+}
+
+/* Hides "-- Choose --" from dropdown list */
 option:nth-of-type(1) {
   display: none;
 }
 
-.tagline {
+/* Modal */
+.error-modal{
+  position: absolute;
+  top: 0;
+  left: 0;
   display: none;
-  font-size: 1.2em;
-  margin-top: 20%;
-  text-align: center;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999999999999999999999;
 }
+#error-msg{
+  padding: 2%;
+  text-align: center;
+  width: 80%;
+  font-size: 1.5em;
+  height: 40%;
+  margin: 45% auto;
+  color: #F15A24;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #F15A24;
+}
+#ok-btn{
+  width: 70%;
+  margin: auto;
+  background-color: #F15A24;
+  height: 50px;
+  border-radius: 8px;
+  border: 1px solid #666666;
+  font-size: 1.5em;
+  color: #4D4D4D;
+}
+.results{
+  width: 98%;
+  margin: 0 auto;
+  border: 1px solid #F15A24;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.city-img{
+  padding-top: 5%;
+  display: none;
+  width: 70%;
+  margin: 0 auto;
+}
+.city-img img{
+  max-width: 100%;
+}
+/* MOVIE LIST STYLES */
+.movie-img {
+  max-width: 98%;
+}
+.results img {
+  flex-basis: 25vw;
+}
+.movie-info {
+  flex-basis: 75vw;
+}
+
+
 
 footer {
   flex-basis: 20%;
   width: 98%;
   margin: 0 auto;
   box-sizing: border-box;
-  border-top: 2px solid grey;
+  border-top: 1px solid #F15A24;
 }
 
-/* MOVIE LIST STYLES */
-.movie-img {
-  max-width: 98%;
-}
-
-.result.img {
-  flex-basis: 25vw;
-}
-
-.result.info {
-  flex-basis: 75vw;
-}
 
 /* BUTTONS */
 button {
@@ -147,21 +212,30 @@ button {
   border: 1px solid #666666;
   font-size: 1.5em;
   color: #4D4D4D;
+  -webkit-transition: all 1s; /* Safari */
+  transition: all 1s;
+
 }
 button:hover {
   cursor: pointer;
 }
-#next, #submit {
+#next, #back {
   display: none;
 }
 
 .bright {
   position: absolute;
-  animation-name: blinkForward;
+  animation-name: blink;
   animation-duration: 1s;
   animation-iteration-count: infinite;
 }
-
+.bright-back{
+  position: absolute;
+  animation-name: blink;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  left: 30%;
+}
 /* FIXED GRAPHICS STYLES */
 .corner-up {
   position: fixed;

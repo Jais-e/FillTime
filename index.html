@@ -11,7 +11,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="description" content="Tired of frequently wasting time while waiting for you next meeting, task, transport or whatever? Let FillTime find an activity in your area that fits your timeframe!">
   <meta name="author" content="Jais Kurecko Eriksen">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
   <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="shortcut icon" type="image/png" href="img/logo.png" />
@@ -26,26 +26,34 @@
     <picture class="corner-up">
       <img src="img/corner.png" alt="corner graphics">
     </picture>
-
+    <section class="error-modal"><div id="error-msg"></div></section>
     <header>
-      <div class="burger"><img src="img/burgermenu.png" alt="mobile nav icon"></div>
-      <div class="logo"><img src="img/logo.png" alt"logo"></div>
-
+      <div class="burger"><img src="img/settings.png" alt="mobile nav icon"></div>
+      <div class="logo"><img src="img/logo.png" alt="logo"></div>
+      <h1>FillTime Activities</h1>
     </header>
 
-    <!-- the element which will hold the json-data -->
+    <!-- the element which will hold the json-data and drop down selectors-->
     <article class="content">
       <section class="animation"><img src="img/logoanimation3.gif" alt="animated logo"></section>
       <section>
+        <h2 class="headline" id="headline-top"></h2>
         <select class="selector" id="city-choice"></select>
+        <h2 class="headline" id="headline-position1"></h2>
+        <picture id="marker"><img src="img/marker.png" alt="gps marker"></picture>
+        <h2 class="headline" id="headline-position2"></h2>
         <select class="selector" id="start-time"></select>
         <select class="selector" id="end-time"></select>
+        <h2 class="headline" id="headline-category"></h2>
         <select class="selector" id="category-choice"></select>
       </section>
+      <section class="results">
 
+      </section>
+      <picture class="city-img"></picture>
     </article>
     <section class="tagline">
-      <h2>Make something of your wating time</h2>
+      <h2></h2>
     </section>
 
 
@@ -53,13 +61,13 @@
   <footer>
     <section class="buttons">
       <button id="get-started">Get started<span class="bright"> >></span></button>
-      <button id="next">Next<span class="bright"> >></button>
-      <button id="submit">Next<span class="bright"> >></button>
+      <button id="next">Submit<span class="bright"> >></span></button>
+      <button id="back"><span class="bright-back"><< </span>Back</button>
     </section>
     <picture class="corner-down">
       <img src="img/corner.png" alt="corner graphics">
     </picture>
-    <script type="text/javascript" src="js/script.js"></script>
+    <script src="js/script.js"></script>
   </footer>
 </main>
 
