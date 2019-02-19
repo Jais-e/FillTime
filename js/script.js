@@ -7,6 +7,19 @@ let dropDown = '<option value="">-- Choose city --</option>';
 let dropDown2 = '<option value="">-- Choose activity --</option>';
 let dropDown3 = '<option value="">-- Start at --</option>';
 let dropDown4 = '<option value="">-- End at --</option>';
+let activityTime; // Duration OR recommended time to spend - per category
+let allActivitiesTime; // Duration OR recommended time to spend - all categories
+let exhibitStart; // Museum opens
+let exhibitEnd; // Museum closes
+let movieStart; // Movie begins
+let movieEnd; // Movie ends
+let activeStart; // Activity location opens
+let activeEnd; // Activity location closes
+let startTimeframe; // User timeframe start
+let endTimeframe; // User timeframe ends
+let availableTime;
+let actualEndTime;
+let chosenCategory;
 let localStorageWasHere;
 
 
@@ -206,19 +219,7 @@ function getMovies() {
       appendMovies(movies);
     });
 };
-let activityTime; // Duration OR recommended time to spend - per category
-let allActivitiesTime; // Duration OR recommended time to spend - all categories
-let exhibitStart; // Museum opens
-let exhibitEnd; // Museum closes
-let movieStart; // Movie begins
-let movieEnd; // Movie ends
-let activeStart; // Activity location opens
-let activeEnd; // Activity location closes
-let startTimeframe; // User timeframe start
-let endTimeframe; // User timeframe ends
-let availableTime;
-let actualEndTime;
-let chosenCategory;
+
 
 // Appends movies-category json data to the DOM
 function appendMovies(movies) {
@@ -231,14 +232,15 @@ function appendMovies(movies) {
     startTimeframe = Number(startTimeframe);
     endTimeframe = Number(endTimeframe);
     availableTime = Number(availableTime);
+
     console.log(movie.title.rendered + " starts at " + movieStart + ".00");
     console.log("start timeframe " + startTimeframe);
+    console.log("end timeframe " + endTimeframe);
     console.log("available time " + availableTime);
     console.log("movie duration " + timeConvert(activityTime));
     console.log("actual end time " + actualEndTime);
-    console.log("end timeframe " + endTimeframe);
 
-    if (activityTime/60 <= availableTime && startTimeframe <= movieStart && actualEndTime <= endTimeframe){
+    if (chosenCategory == "Movies" && activityTime/60 <= availableTime && startTimeframe <= movieStart && actualEndTime < endTimeframe){
       console.log(movie.acf.title + " is available");
     movieTemplate += `
         <section class="result-item">
@@ -253,11 +255,16 @@ function appendMovies(movies) {
             <p><B>Duration:</B> ${timeConvert(activityTime)}</p>
           </div>
           </section>
-        `;
+        `
         }
         else {
-
-        }
+          document.querySelector(".error-modal").style.display = "block";
+          document.querySelector("#error-msg").innerHTML = "<h3>Sorry, no movie available in your timeframe</h3><br><button id='ok-btn'>Ok!</button>";
+          document.querySelector("#ok-btn").onclick = function() {
+            document.querySelector("#end-time").selectedIndex = dropDown2[0];
+            document.querySelector(".error-modal").style.display = "none";
+        };
+      };
   };
 
   document.querySelector(".results").innerHTML += movieTemplate;
@@ -269,7 +276,6 @@ function getExhibitions() {
     .then(function(response) {
       return response.json();
     })
-
     .then(function(exhibition) {
       appendMovies(exhibition);
     });
