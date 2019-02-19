@@ -21,9 +21,38 @@ let startTimeframe; // User timeframe start
 let endTimeframe; // User timeframe ends
 let availableTime;
 let chosenCategory;
+let localStorageWasHere;
+
+
+// Web storage
+document.querySelector("#remember-me").onclick = function(){
+ let rememberMe = true;
+  console.log(rememberMe);
+  // store value in local storage
+  localStorage.setItem("boolean", rememberMe);
+  // call loadFromStorage to update displayed values
+  loadFromStorage();
+document.querySelector(".first-time-here").style.display = "none";
+};
+function loadFromStorage() {
+  // get data from local storage
+  localStorageWasHere = localStorage.getItem("boolean");
+  console.log("localStorageWasHere", localStorageWasHere);
+}
+loadFromStorage();
+
+
 
 // What to be displayed when clicking "Get started" button
 document.querySelector('#get-started').onclick = function() {
+// Display the "first time here pop-up" - if first time here...
+  if (localStorageWasHere == "true"){
+    document.querySelector(".first-time-here").style.display = "none";
+  }
+    else{
+      document.querySelector(".first-time-here").style.display = "block";
+  };
+  // Display all else
   document.querySelector('#get-started').style.opacity = "0.5";
   document.querySelector("#city-choice").style.display = "block";
   document.querySelector("#marker").style.display = "block";
@@ -165,7 +194,7 @@ document.querySelector("#next").onclick = function() {
     document.querySelector(".results").style.display = "block";
     document.querySelector("#back").style.display = "block";
     document.querySelector("#headline-top").innerHTML = "Your options:";
-    appendMovies();
+    getMovies();
   } else {
     document.querySelector(".error-modal").style.display = "block";
     document.querySelector("#error-msg").innerHTML = "<h3>Make sure that you have chosen a category</h3><br><button id='ok-btn'>Ok!</button>";
@@ -198,11 +227,10 @@ function getMovies() {
     })
 
     .then(function(movies) {
+
       appendMovies(movies);
     });
-  movieStart = movies.acf.start;
-  movieEnd = movies.acf.end;
-  activityTime = movies.acf.duration;
+
 };
 
 
@@ -212,15 +240,17 @@ function appendMovies(movies) {
   for (let movie of movies) {
     console.log(movie);
     movieTemplate += `
-          <section class="result-img">
-            <img class="movie-img" src="${movie.acf.featured}" alt="movie poster">
-          </section>
-          <section class="movie-info">
+        <section class="result-item">
+          <picture class="result-img">
+            <img src="${movie.acf.featured}" alt="movie poster">
+          </picture>
+          <div class="movie-info">
             <h4>${movie.title.rendered}</h4>
             <p>Genre: ${movie.acf.genre}</p>
             <p>Description: ${movie.content.rendered}</p>
-            <p>Begins: ${movieStart} </p>
-            <p>Duration: ${timeConvert(activityTime)}</p>
+            <p><B>Begins:</B> ${movie.acf.start} </p>
+            <p><B>Duration:</B> ${timeConvert(movie.acf.duration)}</p>
+          </div>
           </section>
         `;
   };
