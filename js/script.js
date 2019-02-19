@@ -1,6 +1,4 @@
 'use strict';
-
-
 // Global variables
 const cities = ["Aarhus", "Copenhagen", "Odense", "Aalborg"];
 const categories = ["All", "Movies", "Museums", "Parks", "Music", "Active"];
@@ -9,18 +7,6 @@ let dropDown = '<option value="">-- Choose city --</option>';
 let dropDown2 = '<option value="">-- Choose activity --</option>';
 let dropDown3 = '<option value="">-- Start at --</option>';
 let dropDown4 = '<option value="">-- End at --</option>';
-let activityTime; // Duration OR recommended time to spend - per category
-let allActivitiesTime; // Duration OR recommended time to spend - all categories
-let exhibitStart; // Museum opens
-let exhibitEnd; // Museum closes
-let movieStart; // Movie begins
-let movieEnd; // Movie ends
-let activeStart; // Activity location opens
-let activeEnd; // Activity location closes
-let startTimeframe; // User timeframe start
-let endTimeframe; // User timeframe ends
-let availableTime;
-let chosenCategory;
 let localStorageWasHere;
 
 
@@ -40,8 +26,6 @@ function loadFromStorage() {
   console.log("localStorageWasHere", localStorageWasHere);
 }
 loadFromStorage();
-
-
 
 // What to be displayed when clicking "Get started" button
 document.querySelector('#get-started').onclick = function() {
@@ -78,11 +62,10 @@ document.querySelector('#get-started').onclick = function() {
     dropDown += `
   <option class="select-item" value=${city}> ${city} </option>
 `
-    console.log(city);
+
   }
   // Add "cities" to DOM
   document.querySelector("#city-choice").innerHTML += dropDown;
-
 };
 
 // When city selected... only Aarhus works
@@ -94,7 +77,6 @@ document.querySelector("#city-choice").onchange = function() {
     for (iOn = 0; iOn < elementsOn.length; iOn++) {
       elementsOn[iOn].style.display = "block";
     };
-
     // Display elements "none"
     let elementsOff = document.querySelectorAll("#city-choice, #get-started, #marker, #headline-position1, #headline-position2");
     let iOff;
@@ -110,7 +92,7 @@ document.querySelector("#city-choice").onchange = function() {
       dropDown2 += `
     <option class="select-item" value=${cat}> ${cat} </option>
   `
-      console.log("categories " + cat);
+
     }
     // Add "categories" to DOM
     document.querySelector("#category-choice").innerHTML += dropDown2;
@@ -119,14 +101,14 @@ document.querySelector("#city-choice").onchange = function() {
       dropDown3 += `
     <option class="select-item" value=${hour}> ${hour + ".00"} </option>
     `
-      console.log("start times " + hour);
+
     }
     // Populate dropdown4 menu with "time"
     for (let hour of time) {
       dropDown4 += `
   <option class="select-item" value=${hour}> ${hour + ".00"} </option>
   `
-      console.log("end times " + hour);
+
     }
     // Add "time" to DOM
     document.querySelector("#start-time").innerHTML += dropDown3;
@@ -140,17 +122,15 @@ document.querySelector("#city-choice").onchange = function() {
       document.querySelector("#city-choice").selectedIndex = dropDown[1];
     };
   }
-
   // Start time selection
   document.querySelector("#start-time").onchange = function() {
     startTimeframe = this[this.selectedIndex].value;
     console.log(startTimeframe);
   };
-
   // End time selection
   document.querySelector("#end-time").onchange = function() {
     endTimeframe = this[this.selectedIndex].value;
-
+    console.log(endTimeframe);
     // Validating input - Start can't be later than end
     if (endTimeframe <= startTimeframe) {
       document.querySelector(".error-modal").style.display = "block";
@@ -166,15 +146,12 @@ document.querySelector("#city-choice").onchange = function() {
     }
     console.log("Time available " + availableTime + " hour(s)");
   };
-
   // Category selection
   document.querySelector("#category-choice").onchange = function() {
     chosenCategory = this[this.selectedIndex].value;
     console.log(chosenCategory);
   };
 };
-
-
 /*
 // Filter activities available within timeframe
 function activityAvailable(activities, startTime, endTime, maxDuration){
@@ -197,7 +174,7 @@ document.querySelector("#next").onclick = function() {
     getMovies();
   } else {
     document.querySelector(".error-modal").style.display = "block";
-    document.querySelector("#error-msg").innerHTML = "<h3>Make sure that you have chosen a category</h3><br><button id='ok-btn'>Ok!</button>";
+    document.querySelector("#error-msg").innerHTML = "<h3>Make sure that you have chosen both timeframe & category</h3><br><button id='ok-btn'>Ok!</button>";
     document.querySelector("#ok-btn").onclick = function() {
       document.querySelector("#end-time").selectedIndex = dropDown4[0];
       document.querySelector(".error-modal").style.display = "none";
@@ -215,7 +192,7 @@ function timeConvert(n) {
   let rhours = Math.floor(hours);
   let minutes = (hours - rhours) * 60;
   let rminutes = Math.round(minutes);
-  return rhours + " h and " + rminutes + " m";
+  return rhours + " h " + rminutes + " m";
 };
 
 
@@ -225,20 +202,44 @@ function getMovies() {
     .then(function(response) {
       return response.json();
     })
-
     .then(function(movies) {
-
       appendMovies(movies);
     });
-
 };
-
+let activityTime; // Duration OR recommended time to spend - per category
+let allActivitiesTime; // Duration OR recommended time to spend - all categories
+let exhibitStart; // Museum opens
+let exhibitEnd; // Museum closes
+let movieStart; // Movie begins
+let movieEnd; // Movie ends
+let activeStart; // Activity location opens
+let activeEnd; // Activity location closes
+let startTimeframe; // User timeframe start
+let endTimeframe; // User timeframe ends
+let availableTime;
+let actualEndTime;
+let chosenCategory;
 
 // Appends movies-category json data to the DOM
 function appendMovies(movies) {
   let movieTemplate = "";
+
   for (let movie of movies) {
-    console.log(movie);
+    activityTime = Number(movie.acf.duration);
+    movieStart = Number(movie.acf.start);
+    actualEndTime = Number(movie.acf.start) + Number(activityTime/60);
+    startTimeframe = Number(startTimeframe);
+    endTimeframe = Number(endTimeframe);
+    availableTime = Number(availableTime);
+    console.log(movie.title.rendered + " starts at " + movieStart + ".00");
+    console.log("start timeframe " + startTimeframe);
+    console.log("available time " + availableTime);
+    console.log("movie duration " + timeConvert(activityTime));
+    console.log("actual end time " + actualEndTime);
+    console.log("end timeframe " + endTimeframe);
+
+    if (activityTime/60 <= availableTime && startTimeframe <= movieStart && actualEndTime <= endTimeframe){
+      console.log(movie.acf.title + " is available");
     movieTemplate += `
         <section class="result-item">
           <picture class="result-img">
@@ -248,11 +249,15 @@ function appendMovies(movies) {
             <h4>${movie.title.rendered}</h4>
             <p>Genre: ${movie.acf.genre}</p>
             <p>Description: ${movie.content.rendered}</p>
-            <p><B>Begins:</B> ${movie.acf.start} </p>
-            <p><B>Duration:</B> ${timeConvert(movie.acf.duration)}</p>
+            <p><B>Begins:</B> ${movieStart + ".00"} </p>
+            <p><B>Duration:</B> ${timeConvert(activityTime)}</p>
           </div>
           </section>
         `;
+        }
+        else {
+
+        }
   };
 
   document.querySelector(".results").innerHTML += movieTemplate;

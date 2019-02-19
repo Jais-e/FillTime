@@ -28,7 +28,7 @@
   color: #666666;
 }
 
-body {
+body, html {
   max-width: 480px;
   height: 100vh;
   overflow-x: hidden;
@@ -42,18 +42,16 @@ body {
 .wrapper {
   height: 100%;
   width: 100%;
-  max-width: 480px;
-  overflow-y: hidden;
+
+  overflow: hidden;
 }
 h1{
   display: none;
 }
 .strong{
-
   font-weight: bold;
   color: white;
   text-align: center;
-
 }
 
 /* HEADER SECTION */
@@ -65,7 +63,7 @@ header {
   height: 20%;
   width: 98%;
   max-width: 480px;
-  margin: 0 auto;
+  margin: 0 1%;
   box-sizing: border-box;
   border-bottom: 1px solid #F15A24;
   display: flex;
@@ -155,10 +153,10 @@ option:nth-of-type(1) {
   z-index: 9999999999999999999999;
 }
 #error-msg{
-  padding: 2%;
+  padding: 10% 2% 2% 2%;
   text-align: center;
   width: 80%;
-  font-size: 1.5em;
+  font-size: 1.3em;
   height: 40%;
   margin: 45% auto;
   color: #F15A24;
@@ -168,7 +166,7 @@ option:nth-of-type(1) {
 }
 #ok-btn{
   width: 70%;
-  margin: auto;
+  margin: 5% auto;
   background-color: #F15A24;
   height: 50px;
   border-radius: 8px;
@@ -249,7 +247,7 @@ footer {
   height: 20%;
   width: 98%;
   max-width: 480px;
-  margin: 0 auto;
+  margin: 0 1%;
   box-sizing: border-box;
   border-top: 1px solid #F15A24;
   background: white;
@@ -266,8 +264,8 @@ button {
   border: 1px solid #666666;
   font-size: 1.5em;
   color: #4D4D4D;
-  -webkit-transition: all 1s; /* Safari */
-  transition: all 1s;
+  -webkit-transition:opacity 1s; /* Safari */
+  transition: opacity 1s;
 
 }
 button:hover {
@@ -295,6 +293,8 @@ button:hover {
   position: fixed;
   top: 1%;
   left: 1%;
+  display: block;
+  z-index: 10;
 }
 
 .corner-down {
